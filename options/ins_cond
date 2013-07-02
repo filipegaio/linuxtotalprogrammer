@@ -1,0 +1,66 @@
+#!/bin/bash
+# Arquivo de condições
+
+pasta_local=""
+source $pasta_local"variaveis"
+source $pasta_local"language/lang"
+
+tipo=`zenity --list --radiolist --height=275 --title "$lang_titulo" --text "$lang_cond_escolher_tipo" --column "X" --column "$lang_opcoes" \
+	FALSE "$lang_cond_e_arquivo"\
+	FALSE "$lang_cond_n_arquivo"\
+	FALSE "$lang_cond_e_dir"\
+	FALSE "$lang_cond_n_dir"\
+	FALSE "$lang_cond_e_var"\
+	FALSE "$lang_cond_n_var"\
+	FALSE "$lang_cond_personalizada"`
+if echo $tipo | grep "$lang_cond_e_arquivo"; then
+	zenity --info --title "$lang_titulo" --text="$lang_cond_sel_arquivo"
+	cond_arquivo=`zenity --file-selection`
+	if echo "$cond_arquivo" | grep $"/home/"; then
+		cond_arquivo=`echo "$cond_arquivo" | cut -d "/" -f 4- | sed -e "s|.*|\$HOME\/&|"`
+	fi
+	echo "if [ -e \"$cond_arquivo\" ]; then" >> $arquivo
+fi
+if echo $tipo | grep "$lang_cond_n_arquivo"; then
+	zenity --info --title "$lang_titulo" --text="$lang_cond_sel_arquivo"
+	cond_arquivo=`zenity --file-selection`
+	if echo "$cond_arquivo" | grep $"/home/"; then
+		cond_arquivo=`echo "$cond_arquivo" | cut -d "/" -f 4- | sed -e "s|.*|\$HOME\/&|"`
+	fi
+	echo "if [ ! -e \"$cond_arquivo\" ]; then" >> $arquivo
+fi
+if echo $tipo | grep "$lang_cond_e_dir"; then
+	zenity --info --title "$lang_titulo" --text="$lang_cond_sel_dir"
+	cond_arquivo=`zenity --file-selection --directory`
+	if echo "$cond_arquivo" | grep $"/home/"; then
+		cond_arquivo=`echo "$cond_arquivo" | cut -d "/" -f 4- | sed -e "s|.*|\$HOME\/&|"`
+	fi
+	echo "if [ -d \"$cond_arquivo\" ]; then" >> $arquivo
+fi
+if echo $tipo | grep "$lang_cond_n_dir"; then
+	zenity --info --title "$lang_titulo" --text="$lang_cond_sel_dir"
+	cond_arquivo=`zenity --file-selection --directory`
+	if echo "$cond_arquivo" | grep $"/home/"; then
+		cond_arquivo=`echo "$cond_arquivo" | cut -d "/" -f 4- | sed -e "s|.*|\$HOME\/&|"`
+	fi
+	echo "if [ ! -d \"$cond_arquivo\" ]; then" >> $arquivo
+fi
+if echo $tipo | grep "$lang_cond_e_var"; then
+	nome_var=`zenity --entry --title "$lang_titulo" --text="$lang_var_nome_qual"`
+	valor_var=`zenity --entry --title "$lang_titulo" --text="$lang_var_valor_qual"`
+	echo "nome_var="$nome_var"
+valor_var="$valor_var"
+if echo \"\$nome_var\" | grep \$\"\$valor_var\"; then" >> $arquivo
+fi
+if echo $tipo | grep "$lang_cond_n_var"; then
+	nome_var=`zenity --entry --title "$lang_titulo" --text="$lang_var_nome_qual"`
+	valor_var=`zenity --entry --title "$lang_titulo" --text="$lang_var_valor_qual"`
+	echo "nome_var="$nome_var"
+valor_var="$valor_var"
+if ! echo \"\$nome_var\" | grep \$\"\$valor_var\"; then" >> $arquivo
+fi
+if echo $tipo | grep "$lang_cond_personalizada"; then
+	cond_arquivo=`zenity --entry --title "$lang_titulo" --text "$lang_cond_personalizada_ins"`
+	echo "if $cond_arquivo; then" >> $arquivo
+fi
+echo "##### Início de Condição | $tipo $valor_var" >> $log

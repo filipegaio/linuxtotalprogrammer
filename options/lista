@@ -1,0 +1,116 @@
+#!/bin/bash
+# Geração de listas
+
+pasta_local=""
+source $pasta_local"variaveis"
+source $pasta_local"language/lang"
+
+tipo=`zenity --list --text "$lang_list_quantas_opcoes" --radiolist --column "X" --column "$lang_opcoes" \
+	TRUE "$lang_list_uma_opcao"\
+	FALSE "$lang_list_mult_opcoes"`
+echo "$lang_list_log_lista | $tipo" >> $log
+if echo $tipo | grep $"$lang_list_uma_opcao"; then
+	tipo=--radiolist
+fi
+if echo $tipo | grep $"$lang_list_mult_opcoes"; then
+	tipo=--checklist
+fi
+numero=`zenity --scale --min-value=1 --max-value=30 --step=1 --value=2 --text "$lang_list_escolha_num"`
+altura=`expr $numero \* 23 + 113`
+
+## Configurando Loop da lista
+loop=`zenity --list --text "$lang_list_perg_loop" --radiolist --column "X" --column "$lang_opcoes" \
+	TRUE "$lang_list_sem_loop"\
+	FALSE "$lang_list_com_loop"`
+if echo $loop | grep $"$lang_list_sem_loop"; then
+	loop="Nao"
+fi
+if echo $loop | grep $"$lang_list_com_loop"; then
+	loop="Sim"
+	echo "sair=Nao
+while echo \$sair | grep $\"Nao\"; do" >> $arquivo
+	altura=`expr $altura + 23`
+fi
+
+numero=`expr $numero + 1`
+ok="0"
+i=1
+echo "SELECT=\`zenity --list $tipo --height=$altura --column \"X\" --column \"$lang_list_select\"" >> $arquivo
+while echo $ok | grep $"0" ; do
+	sed -i '$ { s/^.*$/& \\/ }' $arquivo #Escreve \ no fim da ultima linha
+	opcao[$i]=`zenity --entry --title "$lang_titulo" --text "$lang_list_nome_opcao $i"`
+	echo "	FALSE \"${opcao[i]}\"" >> $arquivo
+
+	echo "     [i] - ${opcao[i]}" >> $log
+
+	# Opções da lista
+	escolha[$i]=`zenity --list --text "$lang_list_que_fazer ${opcao[$i]} $lang_list_for_select" --radiolist --column "X" --column "$lang_opcoes" \
+		TRUE "$lang_list_exec_cmd"\
+		FALSE "$lang_list_abrir_dialog"`
+	if echo ${escolha[$i]} | grep "$lang_list_exec_cmd"; then
+		comando[$i]=`zenity --entry --title "$lang_titulo" --text "${opcao[$i]} | $lang_cmd_explica"`
+		stop[$i]=`zenity --list --radiolist --title "$lang_titulo" --text "$lang_cmd_pergunta" --column "X" --column "$lang_opcoes" \
+			TRUE "$lang_cmd_esperar"\
+			FALSE "$lang_cmd_prosseguir"`
+	fi
+	if echo ${escolha[$i]} | grep "$lang_list_abrir_dialog"; then
+		title[$i]=`zenity --entry --title "$lang_titulo" --text "$lang_dialog_escolha_titulo | ${opcao[$i]}"`
+		text[$i]=`zenity --entry --title "$lang_titulo" --text "$lang_dialog_escreva_texto ${opcao[$i]}"`
+		type[$i]=`zenity --list --text "$lang_dialog_tipo" --radiolist --column "X" --column "$lang_opcoes" \
+			FALSE "$lang_dialog_tipo_info"\
+			FALSE "$lang_dialog_tipo_erro"\
+			FALSE "$lang_dialog_tipo_notif"\
+			FALSE "$lang_dialog_tipo_aviso"`
+		if echo ${type[$i]} | grep $"$lang_dialog_tipo_info"; then
+			type[$i]=--info
+		fi
+		if echo ${type[$i]} | grep $"$lang_dialog_tipo_erro"; then
+			type[$i]=--error
+		fi
+		if echo ${type[$i]} | grep $"$lang_dialog_tipo_notif"; then
+			type[$i]=--notification
+		fi
+		if echo ${type[$i]} | grep $"$lang_dialog_tipo_aviso"; then
+			type[$i]=--warning
+		fi
+	fi
+	i=`expr $i + 1`
+	if echo $i | grep $"$numero"; then
+		ok="1"
+		if echo $loop | grep $"Sim"; then
+			sed -i '$ { s/^.*$/& \\/ }' $arquivo #Escreve \ no fim da ultima linha
+			echo "	FALSE \"$lang_sair\"" >> $arquivo
+		fi
+	fi
+done
+sed -i '$ { s/^.*$/&\`/ }' $arquivo #Escreve ` no fim da ultima linha
+ok="0"
+i=1
+while echo $ok | grep $"0"; do
+	if echo ${escolha[$i]} | grep $"$lang_list_exec_cmd"; then
+		echo "if echo \$SELECT | grep $\"${opcao[$i]}\"; then" >> $arquivo
+		if echo ${stop[$i]} | grep $"$$lang_cmd_esperar"; then
+			echo "${comando[$i]}" >> $arquivo
+			echo "fi" >> $arquivo
+		fi
+		if echo ${stop[$i]} | grep $"$lang_cmd_prosseguir"; then
+			echo "${comando[$i]} &" >> $arquivo
+			echo "fi" >> $arquivo
+		fi
+	fi
+	if echo ${escolha[$i]} | grep $"$lang_list_abrir_dialog"; then
+		echo "if echo \$SELECT | grep $\"${opcao[$i]}\"; then
+	zenity ${type[$i]} --title \"${title[$i]}\" --text \"${text[$i]}\"
+fi" >> $arquivo
+	fi
+	i=`expr $i + 1`
+	if echo $i | grep $"$numero"; then
+		ok="1"
+	fi
+done
+if echo $loop | grep $"Sim"; then
+	echo "if echo \$SELECT | grep $\"$lang_sair\"; then
+	sair=\"Sim\"
+fi
+done" >> $arquivo
+fi

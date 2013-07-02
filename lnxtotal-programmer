@@ -1,0 +1,184 @@
+#!/bin/bash
+# Gerador automático de interface gráfica da Linux Total
+# http://www.linuxtotal.org/
+# Criado por Filipe Augusto Gaio de Oliveira
+# Este programa não pode ser vendido ou utilizado para fins comerciais
+
+# Declarando caminho dos arquivos de log e do arquivo temporário e outras variáveis importantes
+
+# Pasta local depende do interpretador de comandos que está sendo usado. Ela está originalmente configurada para o interpretador /bin/bash
+pasta_local=""
+echo $pasta_local
+source $pasta_local"variaveis"
+echo $pasta_local"variaveis"
+source $pasta_local"language/lang"
+echo $pasta_local"language/lang"
+protecao=0
+protecao_loop=0
+
+# Verificando a existência e criando a pasta .lnxtotal
+
+if [ ! -e $HOME/.lnxtotal/ ]; then
+	mkdir $HOME/.lnxtotal/
+fi
+
+# Medida de segurança para zerar o arquivo usando apenas um > no echo
+
+echo "#!/bin/bash
+# $lang_creditos_gerado Linux Total Programmer
+# $lang_maiores_info http://www.linuxtotal.org/" > $arquivo
+echo "$lang_inicio_prog" > $log
+
+# Iniciando loop para montagem do programa
+sair_principal="0"
+while echo $sair_principal | grep $"0"; do
+SELECAO=`zenity --list --height=389 --title "$lang_titulo" --text "$lang_escolha_recurso_add" --radiolist --column "X" --column "$lang_opcoes" \
+	FALSE "$lang_add_dialogo"\
+	FALSE "$lang_add_lista"\
+	FALSE "$lang_add_comandos"\
+	FALSE "$lang_ins_condicao"\
+	FALSE "$lang_fin_condicao"\
+	FALSE "$lang_menu_var"\
+	FALSE "$lang_op"\
+	FALSE "$lang_plugins"\
+	FALSE "$lang_log"\
+	FALSE "$lang_ver_arquivo"\
+	FALSE "$lang_senha"\
+	FALSE "$lang_exec"\
+	FALSE "$lang_finalizar"`
+# VENDO ARQUIVO CRIADO
+if echo $SELECAO | grep $"$lang_ver_arquivo"; then
+	zenity --text-info --height=600 --width=800 --filename=$arquivo
+	SELECAO="lnxtotal"
+fi
+
+if echo $SELECAO | grep $"$lang_exec"; then
+	if echo $protecao | grep $"0"; then
+		if echo $protecao_loop | grep $"0"; then
+			sh $arquivo
+		fi
+	   else
+		zenity --error --title "$lang_titulo" --text "$lang_protecao1 $protecao $lang_protecao2 $protecao_loop $lang_protecao3"
+	fi
+	SELECAO="lnxtotal"
+fi
+		
+if echo $SELECAO | grep $"$lang_finalizar"; then
+	if echo $protecao | grep $"0"; then
+		sair_principal="1"
+		# Protegendo com senha
+		if echo $proteger_senha | grep $"sim"; then
+			senha=`zenity --entry --title "$lang_titulo" --text "$lang_senha_ins"`
+			sed -i "4s/^/senha=\`zenity --password --title \"$lang_senha_prog_protegido\" --text \"$lang_senha_entre\"\`\n if echo \$senha | grep \$\"$senha\"; then\n/" $arquivo
+			echo "else
+			zenity --error --title \"$lang_senha_errada\" --text \"$lang_senha_errada2\"
+fi" >> $arquivo
+		fi
+		# Salvando o programa
+		zenity --info --title "$lang_finalizar" --text "$lang_salvar_onde"
+		salvar=`zenity --file-selection --save`
+		chmod +x $arquivo
+		mv $arquivo "$salvar"
+		# Compilando com SHC
+		compilar=`zenity --list --radiolist --title "$lang_titulo" --text "$lang_salvar_compilar" --column "X" --column "$lang_opcoes" \
+			FALSE "$lang_sim"\
+			TRUE "$lang_nao"`
+		if echo $compilar | grep $"$lang_sim"; then
+			shc -v -r -T -f "$salvar"
+		fi
+		zenity --info --title "$lang_titulo" --text "$lang_creditos"
+	  else
+		zenity --error --title "$lang_titulo" --text "$lang_protecao1 $protecao $lang_protecao2 $protecao_loop $lang_protecao3"
+	fi
+	SELECAO="lnxtotal"
+fi
+
+#Logger
+
+if echo $SELECAO | grep $"$lang_log"; then
+	zenity --text-info --filename=$log
+	SELECAO="lnxtotal"
+fi
+
+# Adicionando dialogos
+
+if echo $SELECAO | grep $"$lang_add_dialogo"; then
+	$pasta_local"options/dialogo"
+	SELECAO="lnxtotal"
+fi
+
+# Adicionar lista
+
+if echo $SELECAO | grep $"$lang_add_lista"; then
+	$pasta_local"options/lista"
+	SELECAO="lnxtotal"
+fi
+
+# Comandos Isolados
+
+if echo $SELECAO | grep $"$lang_add_comandos"; then
+	comandos=`zenity --entry --title "$lang_titulo" --text "$lang_cmd_explica"`
+	parar=`zenity --list --radiolist --title "$lang_titulo" --text "$lang_cmd_pergunta" --column "X" --column "$lang_opcoes" \
+		TRUE "$lang_cmd_esperar"\
+		FALSE "$lang_cmd_prosseguir"`
+	if echo $parar | grep $"$lang_cmd_esperar"; then
+		echo "$comandos" >> $arquivo
+	fi
+	if echo $parar | grep $"$lang_cmd_prosseguir"; then
+		echo "$comandos &" >> $arquivo
+	fi
+	echo "**$comandos | $parar" >> $log
+	SELECAO="lnxtotal"
+fi
+
+# Condicional
+if echo $SELECAO | grep $"$lang_ins_condicao"; then
+	protecao=`expr $protecao + 1`
+	$pasta_local"options/ins_cond"
+	SELECAO="lnxtotal"
+fi
+if echo $SELECAO | grep $"$lang_fin_condicao"; then
+	if echo $protecao | grep $"0"; then
+		zenity --error --title "$lang_titulo" --text "$lang_cond_n_ex"
+	  else
+		echo "fi" >> $arquivo
+		echo "$lang_cond_log_fim" >> $log
+		protecao=`expr $protecao - 1`
+	fi
+	SELECAO="lnxtotal"
+fi
+
+# OPERAÇÕES COM VARIÁVEIS
+
+if echo $SELECAO | grep $"$lang_menu_var"; then
+	$pasta_local"options/menu_variaveis"
+	SELECAO="lnxtotal"
+fi
+
+# OPERAÇÕES COM ARQUIVOS
+
+if echo $SELECAO | grep $"$lang_op"; then
+	$pasta_local"options/op_arquivos"
+	SELECAO="lnxtotal"
+fi
+
+# PLUGINS
+
+if echo $SELECAO | grep $"$lang_plugins"; then
+	$pasta_local"options/plugins"
+	SELECAO="lnxtotal"
+fi
+
+# PROTEÇÃO COM SENHA
+
+if echo $SELECAO | grep $"$lang_senha"; then
+	proteger_senha="sim"
+	zenity --info --title "$lang_titulo" --text "$lang_senha_sobre"
+	echo "$lang_senha_log" >> $log
+	SELECAO="lnxtotal"
+fi
+if ! echo $SELECAO | grep $"lnxtotal"; then
+	sair_principal="1"
+fi
+done
+exit 0 

@@ -1,0 +1,4 @@
+# Variáveis globais do sistema
+log=$HOME/.lnxtotal/log
+arquivo=$HOME/.lnxtotal/novo
+lang_titulo="Linux Total Programmer"

@@ -1,0 +1,30 @@
+#!/bin/bash	
+# Caixa de dialogos
+
+pasta_local=""
+source $pasta_local"variaveis"
+source $pasta_local"language/lang"
+
+titulo=`zenity --entry --title "$lang_titulo" --text "$lang_dialog_escolha_titulo"`
+texto=`zenity --entry --title "$lang_titulo" --text "$lang_dialog_escreva_texto"`
+tipo=`zenity --list --height=205 --text "$lang_dialog_tipo" --radiolist --column "X" --column "$lang_opcoes" \
+	FALSE "$lang_dialog_tipo_info"\
+	FALSE "$lang_dialog_tipo_erro"\
+	FALSE "$lang_dialog_tipo_notif"\
+	FALSE "$lang_dialog_tipo_aviso"`
+echo "**$tipo 
+    $titulo
+    $texto" >> $log
+if echo $tipo | grep $"$lang_dialog_tipo_info"; then
+	tipo=--info
+fi
+if echo $tipo | grep $"$lang_dialog_tipo_erro"; then
+	tipo=--error
+fi
+if echo $tipo | grep $"$lang_dialog_tipo_notif"; then
+	tipo=--notification
+fi
+if echo $tipo | grep $"$lang_dialog_tipo_aviso"; then
+	tipo=--warning
+fi
+echo zenity $tipo --title \"$titulo\" --text \"$texto\" >> $arquivo

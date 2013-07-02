@@ -1,0 +1,145 @@
+# Linguagem do programa em Português (Brasil)
+
+# Menu principal
+lang_escolha_recurso_add="Selecione o recurso que deseja adicionar:"
+lang_opcoes="Opções"
+lang_creditos="Obrigado por utilizar o Linux Total Programmer! \n \n Acesse nosso site: http://www.linuxtotal.org/ \n \n ou o site oficial do programa:\n\n http://programmer.linuxtotal.org/ \n\n para conferir as novidades!"
+lang_sair="Sair"
+
+lang_sim="Sim"
+lang_nao="Não"
+
+lang_protecao1="Existe(m)"
+lang_protecao2="condição(ões) não finalizada(s) \n e existe(m)"
+lang_protecao3="loop(s) não finalizado(s) \n por favor, finalize-o(s) antes de encerrar ou testar seu programa"
+
+lang_creditos_gerado="Programa gerado pelo"
+lang_maiores_info="Maiores informações em"
+lang_inicio_prog="Inicio do programa"
+
+lang_add_dialogo="Adicionar um diálogo com texto"
+lang_add_lista="Adicionar uma lista"
+lang_add_comandos="Adicionar um ou mais comandos"
+lang_ins_condicao="Inserir Condição"
+lang_fin_condicao="Finalizar Condição"
+lang_menu_var="Variáveis"
+lang_log="Log do que já foi feito"
+lang_ver_arquivo="Ver arquivo criado"
+lang_senha="Adicionar proteção com senha"
+lang_exec="Executar programa"
+lang_finalizar="Finalizar programa"
+
+# Protecao com senha
+
+lang_senha_ins="Insira a senha a ser utilizada para abrir o programa"
+lang_senha_prog_protegido="Programa protegido"
+lang_senha_entre="Entre com a senha para executar o programa"
+lang_senha_errada="Senha errada"
+lang_senha_errada2="Senha errada, acesso negado"
+lang_senha_sobre="Não é seguro apenas executar o programa sem compila-lo.\n Para que ninguem descubra a senha, compile seu programa\n utilizando o shell script compiler (shc)"
+lang_senha_log="**Protegido com senha"
+
+# Salvando Programa
+
+lang_salvar_onde="Escolha onde quer salvar o seu programa."
+lang_salvar_compilar="Deseja compilar seu programa para esconder o código do mesmo?\n\n (Requer o compilador \"shc\" instalado para compilar"
+
+# Caixa de Diálogo
+
+lang_dialog_escolha_titulo="Escolha um título para a janela"
+lang_dialog_escreva_texto="Escreva o texto da janela"
+lang_dialog_tipo="Tipo da janela"
+lang_dialog_tipo_info="Diálogo de informações"
+lang_dialog_tipo_erro="Diálogo de erro"
+lang_dialog_tipo_notif="Notificação"
+lang_dialog_tipo_aviso="Diálogo de aviso"
+
+# Condicionais
+lang_cond_n_ex="Não existem condições a serem finalizadas"
+lang_cond_log_inicio="##### Início de Condição"
+lang_cond_log_fim="##### Fim de Condição"
+
+lang_cond_escolher_tipo="Escolha que tipo de condição que deseja iniciar:"
+lang_cond_e_arquivo="Se arquivo existe"
+lang_cond_n_arquivo="Se arquivo não existe"
+lang_cond_sel_arquivo="Selecione o arquivo"
+lang_cond_e_dir="Se o diretório existe"
+lang_cond_n_dir="Se o diretório não existe"
+lang_cond_sel_dir="Selecione o diretório"
+lang_cond_personalizada="Condição personalizada"
+lang_cond_personalizada_ins="Insira a condição personalizada"
+lang_cond_e_var="Se variável possuir valor"
+lang_cond_n_var="Se variável não possuir valor"
+
+# Comandos Isolados
+lang_cmd_explica="Insira o comando a ser realizado \n \n dica: Você pode utilizar vários comandos, separando-os por: \n \n & - caso queira que o próximo comando não espere o atual acabar \n \n && - caso queira que o próximo comando espere o atual acabar"
+lang_cmd_pergunta="Deseja que o programa espere a finalização do comando para voltar à execução ou deseja continuar a execução do programa?"
+lang_cmd_esperar="Esperar o comando finalizar"
+lang_cmd_prosseguir="Prosseguir sem esperar"
+
+# Listas
+lang_list_quantas_opcoes="Quantas opções \n podem ser selecionadas?"
+lang_list_uma_opcao="Uma opção"
+lang_list_mult_opcoes="Multiplas opções"
+lang_list_log_lista="**Lista"
+lang_list_escolha_num="Escolha o numero de opções"
+lang_list_perg_loop="Número de vezes que a lista é exibida"
+lang_list_sem_loop="Uma vez apenas"
+lang_list_com_loop="Exibida até o usuário escolher a opção 'Sair'"
+lang_list_select="Selecione"
+lang_list_nome_opcao="Insira o nome da opção numero"
+lang_list_que_fazer="O que fazer quando"
+lang_list_for_select="for selecionado?"
+lang_list_exec_cmd="Executar um comando"
+lang_list_abrir_dialog="Abrir uma caixa de diálogo"
+
+# Variaveis
+lang_var_nome_qual="Qual o nome da variável?"
+lang_var_select_operacao="Selecione a operação a ser feita:"
+lang_var_atribuir_valor="Atribuir um valor à uma variável"
+lang_var_ler_valor="Ler um valor inserido pelo usuário para uma variável"
+lang_var_select_pasta="Variável recebe uma pasta selecionada pelo usuário"
+lang_var_select_arquivo="Variável recebe um arquivo selecionado pelo usuário"
+lang_var_somar_n_v="Somar um número com uma variável"
+lang_var_multi_v_n="Multiplicar uma variável com um número"
+lang_var_div_v_n="Dividir uma variável por um número"
+lang_var_div_n_v="Dividir um número por uma variável"
+lang_var_somar_v_v="Somar duas variáveis"
+lang_var_multi_v_v="Multiplicar duas variáveis"
+lang_var_div_v_v="Dividir duas variáveis"
+lang_var_valor_qual="Qual o valor da variável?"
+lang_var_titulo_janela="Qual o título a ser utilizado na janela?"
+lang_var_texto_janela="Qual o texto a ser utilizado na janela?"
+lang_var_soma_nome="Qual o nome da variável a ser somada?"
+lang_var_soma_nome_n="Qual o número a ser somado?"
+lang_var_some_nome_result="Qual o nome da variável que irá receber o valor da soma?"
+lang_var_multi_nome_v="Qual o nome da variável a ser multiplicada?"
+lang_var_multi_nome_n="Qual o número a ser multiplicado?"
+lang_var_multi_nome_result="Qual o nome da variável que irá receber o valor da multiplicação?"
+lang_var_div_nome_v="Qual o nome da variável a ser dividida?"
+lang_var_div_nome_n="Qual o número pelo qual a variável será dividida?"
+lang_var_div_nome_result="Qual o nome da variável que irá receber o valor da divisão?"
+lang_var_div2_nome_n="Qual o número a ser dividido?"
+lang_var_div2_nome_v="Qual o nome da variável pela qual o número será dividido?"
+lang_var_nome_1_v="Qual o nome da primeira variável?"
+lang_var_nome_2_v="Qual o nome da segunda variável?"
+lang_var_dividendo="Qual o nome da variável a ser dividida?"
+lang_var_divisor1="Qual o nome da variável pela qual"
+lang_var_divisor2="será dividido?"
+
+# Operações com arquivos
+lang_op="Operações com Arquivos"
+lang_op_select="Escolha a operação"
+lang_op_criar_arquivo="Criar um arquivo"
+lang_op_del_arquivo="Deletar um arquivo"
+lang_op_ren_arquivo="Renomear um arquivo"
+lang_op_mov_arquivo="Mover um arquivo"
+lang_op_escrever_arquivo="Escrever dentro de um arquivo"
+lang_op_criar_pasta="Criar pasta"
+lang_op_del_pasta="Deletar pasta"
+lang_op_ren_pasta="Renomear pasta"
+
+lang_op_caminho_arq="Insira o caminho do arquivo"
+
+# Plugins
+lang_plugins="Plugins"

@@ -1,0 +1,95 @@
+#!/bin/bash
+# Menu de variaveis
+
+pasta_local=""
+source $pasta_local"variaveis"
+source $pasta_local"language/lang"
+
+var="lnxtotal"
+while echo $var | grep "lnxtotal"; do
+var=`zenity --list --height=389 --width=410 --title "$lang_titulo" --text "$lang_var_select_operacao" --radiolist --column "X" --column "$lang_opcoes" \
+	FALSE "$lang_var_atribuir_valor"\
+	FALSE "$lang_var_ler_valor"\
+	FALSE "$lang_var_select_pasta"\
+	FALSE "$lang_var_select_arquivo"\
+	FALSE "$lang_var_somar_n_v"\
+	FALSE "$lang_var_multi_v_n"\
+	FALSE "$lang_var_div_v_n"\
+	FALSE "$lang_var_div_n_v"\
+	FALSE "$lang_var_somar_v_v"\
+	FALSE "$lang_var_multi_v_v"\
+	FALSE "$lang_var_div_v_v"\
+	FALSE "$lang_sair"`
+if echo $var | grep $"$lang_var_atribuir_valor"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_nome_qual"`
+	valor=`zenity --entry --title "$lang_titulo" --text "$lang_var_valor_qual"`
+	echo "$nome=$valor" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_ler_valor"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_nome_qual"`
+	titulo=`zenity --entry --title "$lang_titulo" --text "$lang_var_titulo_janela"`
+	texto=`zenity --entry --title "$lang_titulo" --text "$lang_var_texto_janela"`
+	echo "$nome=\`zenity --entry --title "$titulo" --text "$texto"\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_select_pasta"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_nome_qual"`
+	echo "$nome=\`zenity --file-selection --directory\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_select_arquivo"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_nome_qual"`
+	echo "$nome=\`zenity --file-selection\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_somar_n_v"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_soma_nome"`
+	numero=`zenity --entry --title "$lang_titulo" --text "$lang_var_soma_nome_n"`
+	nova=`zenity --entry --title "$lang_titulo" --text "$lang_var_some_nome_result"`
+	echo "$nova=\`expr $nome + $numero\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_multi_v_n" ; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_multi_nome_v"`
+	numero=`zenity --entry --title "$lang_titulo" --text "$lang_var_multi_nome_n"`
+	nova=`zenity --entry --title "$lang_titulo" --text "$lang_var_multi_nome_result"`
+	echo "$nova=\`expr $nome \* $numero\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_div_v_n"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_div_nome_v"`
+	numero=`zenity --entry --title "$lang_titulo" --text "$lang_var_div_nome_n"`
+	nova=`zenity --entry --title "$lang_titulo" --text "$lang_var_div_nome_result"`
+	echo "$nova=\`expr $nome / $numero\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_div_n_v"; then
+	var="lnxtotal"
+	numero=`zenity --entry --title "$lang_titulo" --text "$lang_var_div2_nome_n"`
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_div2_nome_v"`
+	nova=`zenity --entry --title "$lang_titulo" --text "$lang_var_div_nome_result"`
+	echo "$nova=\`expr $numero / $nome\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_somar_v_v"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_nome_1_v"`
+	nome2=`zenity --entry --title "$lang_titulo" --text "$lang_var_nome_2_v"`
+	nova=`zenity --entry --title "$lang_titulo" --text "$lang_var_some_nome_result"`
+	echo "$nova=\`expr $nome + $nome2\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_multi_v_v"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_nome_1_v"`
+	nome2=`zenity --entry --title "$lang_titulo" --text "$lang_var_nome_2_v"`
+	nova=`zenity --entry --title "$lang_titulo" --text "$lang_var_multi_nome_result"`
+	echo "$nova=\`expr $nome \* $nome2\`" >> $arquivo
+fi
+if echo $var | grep $"$lang_var_div_v_v"; then
+	var="lnxtotal"
+	nome=`zenity --entry --title "$lang_titulo" --text "$lang_var_dividendo"`
+	nome2=`zenity --entry --title "$lang_titulo" --text "$lang_var_divisor1 $nome $lang_var_divisor2"`
+	nova=`zenity --entry --title "$lang_titulo" --text "$lang_var_div_nome_result"`
+	echo "$nova=\`expr $nome / $nome2\`" >> $arquivo
+fi
+done

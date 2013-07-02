@@ -1,0 +1,19 @@
+#!/bin/bash
+# Operações realizadas com arquivos
+
+pasta_local=""
+source $pasta_local"variaveis"
+source $pasta_local"language/lang"
+
+operacao=`zenity --list --height=389 --title "$lang_titulo" --text "$lang_op_select" --radiolist --column "X" --column "$lang_opcoes" \
+	FALSE "$lang_op_criar_arquivo"\
+	FALSE "$lang_op_del_arquivo"\
+	FALSE "$lang_op_ren_arquivo"\
+	FALSE "$lang_op_mov_arquivo"\
+	FALSE "$lang_op_escrever_arquivo"\
+	FALSE "$lang_op_criar_pasta"\
+	FALSE "$lang_op_del_pasta"\
+	FALSE "$lang_op_ren_pasta"`
+if echo $operacao | grep $"$lang_op_criar_arquivo"; then
+	arquivo=`zenity --entry --title $lang_titulo --text "$lang_op_caminho_arq"`
+fi
